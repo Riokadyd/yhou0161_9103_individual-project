@@ -8,6 +8,7 @@ let colors = ['red', 'blue', 'yellow', 'white'];
 let rectWidths = [40, 50, 60, 70, 80, 90];
 let rectHeights = [30, 40, 50];
 let paths = [];
+let noiseScale = 0.05
 
 let layer; 
 
@@ -126,7 +127,7 @@ function setPaths(){
     [25, 375, 185, 375],
     [285, 375, 375, 375],
     // vertical paths
-    [25, 25, 25, 100],
+    [25, 25, 25, 105],
     [265, 25, 265, 175],
     [375, 25, 375, 175],
     [185, 25, 185, 105],
