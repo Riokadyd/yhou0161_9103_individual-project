@@ -201,9 +201,12 @@ function drawRedGhost() {
     redDirection = 1;
   }
 
+  //nosie to shake the ghost.
+  //Redefine the range of noise to ensure that the fluctuations of the target up, down, left, and right are controlled within 5 pixels.
   let noiseX = map(noise(redGhostNoiseX), 0, 1, -5.5, 5.5);
   let noiseY = map(noise(redGhostNoiseY), 0, 1, -5.5, 5.5);
 
+  //the frequency (larger = faster)
   redGhostNoiseX += 0.03;
   redGhostNoiseY += 0.03;
 

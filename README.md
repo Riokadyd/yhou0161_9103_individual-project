@@ -45,3 +45,14 @@ function drawRedGhost() {
   drawPixelGhost(redGhostX - 40 + noiseX, 175 + 260 + noiseY, color(255, 0, 0));
 }
 ```
+
+### Orange Ghost <img src="assets/Orange Ghost.png" width="20" height="20" />
+
+Similar to the principle of the red Ghost, the Perlin Noise here controls its speed. Keep it between 0.5 and 2.
+
+```
+let noiseSpeed = map(noise(orangeGhostNoise), 0, 1, 0.5, 2);
+  orangeGhostY += orangeGhostSpeed * orangeDirection * noiseSpeed;
+```
+
+### Purple Ghost <img src="assets/blue Ghost.jpg" width="20" height="20" />
