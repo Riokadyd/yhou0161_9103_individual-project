@@ -62,7 +62,7 @@ Compared to other ghosts, the purple ghost appears quite shy. Perlin Noise influ
 ```
 let alphaNoise = map(noise(purpleNoise), 0, 1, 25, 255);
 
-  purpleNoise += 0.03;
+  purpleNoise += 0.07;
 
   let purpleColour = color(90, 90, 255, alphaNoise);
   drawPixelGhost(purpleGhostX - 40, 285, purpleColour);
@@ -84,7 +84,7 @@ let noiseValue = greenGhostSlider.value();
   drawPixelGhost(greenGhostX + noiseX - 40, 635 + noiseY, color(0, 200, 0));
 ```
 
-### Green Ghost <img src="assets/pacman.png" width="20" height="20" />
+### Pac Man <img src="assets/pacman.png" width="20" height="20" />
 
 Pac-Man is the protagonist of the game, but this time it encounters four ghosts with different abilities, so it appears nervous this time. Perlin Noise affects its size, making it seem as if it is breathing tensely.
 
@@ -114,3 +114,6 @@ function drawPixelPacman(x, y, bodyColor, pacmanScale) {
   ...
   rect(x + col * s, y + row * s, s, s);}
 ```
+
+### Noise Effect 🎞️
+

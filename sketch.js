@@ -60,6 +60,7 @@ function setup() {
   backgroundMusic.setVolume(0);
 
   noiseLayer = createGraphics(screenSize, screenSize);
+  noiseLayer.pixelDensity(1);
   
   push();
   textFont(pixelFont);
@@ -178,12 +179,12 @@ function drawNoiseLayer(){
       noiseLayer.pixels[rgbaIndex] = noiseBright;
       noiseLayer.pixels[rgbaIndex + 1] = noiseBright;
       noiseLayer.pixels[rgbaIndex + 2] = noiseBright;
-      noiseLayer.pixels[rgbaIndex + 3] = 80;
+      noiseLayer.pixels[rgbaIndex + 3] = 75;
     }
   }
 
   noiseLayer.updatePixels();
-  noiseTime += 0.04;
+  noiseTime += 0.09;
 
   image(noiseLayer, 138 + offsetX, 270);
 }
@@ -244,7 +245,7 @@ function drawPurpleGhost(){
 
   let alphaNoise = map(noise(purpleNoise), 0, 1, 25, 255);
 
-  purpleNoise += 0.03;
+  purpleNoise += 0.07;
 
   let purpleColour = color(90, 90, 255, alphaNoise);
   drawPixelGhost(purpleGhostX - 40, 285, purpleColour);
