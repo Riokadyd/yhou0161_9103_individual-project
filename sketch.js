@@ -8,7 +8,10 @@ let colors = ['red', 'blue', 'yellow', 'white'];
 let rectWidths = [40, 50, 60, 70, 80, 90];
 let rectHeights = [30, 40, 50];
 let paths = [];
-let noiseScale = 0.05
+let redGhostX = 235;
+let redGhostY = 165;
+let charaDirection = 1;
+let charaNoise = 0;
 
 let layer; 
 
@@ -71,6 +74,7 @@ push();
      y2 += h2;
   }
 }
+ 
   pop();
 }
 
@@ -93,12 +97,28 @@ function draw() {
   drawDots();
 
   drawPixelPacman(138, 486, color(255, 255, 0)); // pacman
-  drawPixelGhost(288, 435, color(255, 0, 0)); // red
+  moveRedGhost(); // red
   drawPixelGhost(223, 360, color(255, 100, 0)); //orange
   drawPixelGhost(108, 635, color(0, 200, 0)); //green
   drawPixelGhost(95, 405, color(90, 90, 255)); //purple
 
   pop();
+}
+
+function moveRedGhost(){
+  let speed = 1.5;
+
+  redGhostX += charaDirection * speed;
+
+  if (redGhostX >= 370){
+    redGhostX = 370;
+    charaDirection = -1;
+  }else if(redGhostX <= 230){
+    redGhostX = 230;
+    charaDirection = 1;
+  }
+
+  drawPixelGhost(redGhostX - 32, redGhostY + 270, color(255, 0, 0));
 }
 
 function drawBackground() {
