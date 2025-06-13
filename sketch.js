@@ -45,6 +45,9 @@ let layer;
 let noiseLayer;
 let noiseTime = 0;
 
+let playButton;
+let musicPlaying = false;
+
 function preload() {
   pixelFont = loadFont("assets/pixelFont.TTF");
   backgroundMusic = loadSound("assets/final project music.mp3")
@@ -56,8 +59,9 @@ function setup() {
   noStroke();
   textAlign(CENTER);
 
-  backgroundMusic.loop();
-  backgroundMusic.setVolume(0);
+  playButton = createButton('Play Music');
+  playButton.position(windowWidth / 2 + 335, windowHeight / 2 + 60);
+  playButton.mousePressed(playMusic);
 
   noiseLayer = createGraphics(screenSize, screenSize);
   noiseLayer.pixelDensity(1);
@@ -128,6 +132,7 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   greenGhostSlider.position(windowWidth / 2 + 320, windowHeight / 2);
   greenGhostLabel.position(windowWidth / 2 + 310, windowHeight / 2 - 50);
+  playButton.position(windowWidth / 2 + 335, windowHeight / 2 + 60);
 }
 
 function draw() {
@@ -151,6 +156,19 @@ function draw() {
 
   drawNoiseLayer();
   pop();
+}
+
+function playMusic(){
+  if(!musicPlaying){
+  backgroundMusic.loop();
+  backgroundMusic.setVolume(0.2);
+  playButton.html('Stop Music');
+  musicPlaying = true;
+  } else {
+    backgroundMusic.stop();
+    playButton.html('Play Music');
+    musicPlaying = false;
+  }
 }
 
 function drawBackground() {
