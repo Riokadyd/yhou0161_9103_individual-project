@@ -48,7 +48,7 @@ function drawRedGhost() {
 
 ### Orange Ghost <img src="assets/Orange Ghost.png" width="20" height="20" />
 
-Similar to the principle of the red Ghost, the Perlin Noise here controls its speed. Keep it between 0.5 and 2.
+Similar to the principle of the red Ghost, the Perlin Noise here controls Orange Ghost's speed. Keep it between 0.5 and 2.
 
 ```
 let noiseSpeed = map(noise(orangeGhostNoise), 0, 1, 0.5, 2);
@@ -56,3 +56,61 @@ let noiseSpeed = map(noise(orangeGhostNoise), 0, 1, 0.5, 2);
 ```
 
 ### Purple Ghost <img src="assets/blue Ghost.jpg" width="20" height="20" />
+
+Compared to other ghosts, the purple ghost appears quite shy. Perlin Noise influences its transparency, causing it to flicker. The Alpha channel defines the transparency of pixels. Thus, I adjust its random range between 25 and 255 to ensure it is not completely transparent.
+
+```
+let alphaNoise = map(noise(purpleNoise), 0, 1, 25, 255);
+
+  purpleNoise += 0.03;
+
+  let purpleColour = color(90, 90, 255, alphaNoise);
+  drawPixelGhost(purpleGhostX - 40, 285, purpleColour);
+```
+
+### Green Ghost <img src="assets/GreenGhost.png" width="20" height="20" />
+
+The green ghost is a lively and cheerful character, and it is very eager to interact with you. I set up a slider for the green ghost, which controls the amplitude of the green ghost’s movement.
+
+```
+let noiseValue = greenGhostSlider.value();
+
+  let noiseX = map(noise(greenNoiseX), 0, 1, -noiseValue, noiseValue);
+  let noiseY = map(noise(greenNoiseY), 0, 1, -noiseValue, noiseValue);
+
+  greenNoiseX += 0.02;
+  greenNoiseY += 0.02;
+
+  drawPixelGhost(greenGhostX + noiseX - 40, 635 + noiseY, color(0, 200, 0));
+```
+
+### Green Ghost <img src="assets/pacman.png" width="20" height="20" />
+
+Pac-Man is the protagonist of the game, but this time it encounters four ghosts with different abilities, so it appears nervous this time. Perlin Noise affects its size, making it seem as if it is breathing tensely.
+
+```
+function drawPacman(){
+  pacmanScale = map(noise(pacmanNoise), 0, 1, 1, 2);
+
+  pacmanNoise += 0.02;
+
+  drawPixelPacman(143, 485, color(255, 255, 0), pacmanScale);
+}
+```
+
+Since my team members completed the Pac-Man drawing work, it was ineffective when I tried to change its size. Subsequently, during the inspection, I found that my teammate fixed the size in the code.
+
+```
+function drawPixelPacman(x, y, bodyColor) {
+  const s = 2;
+  ...
+  rect(x + col * s, y + row * s, s, s);}
+```
+
+Therefore, I modified it to turn it into a variable.
+```
+function drawPixelPacman(x, y, bodyColor, pacmanScale) {
+  const s = pacmanScale;
+  ...
+  rect(x + col * s, y + row * s, s, s);}
+```

@@ -380,8 +380,8 @@ function drawPixelGhost(x, y, bodyColor) {
   }
 }
 
-function drawPixelPacman(x, y, bodyColor, scaleSize = 2) {
-  const s = scaleSize;
+function drawPixelPacman(x, y, bodyColor, pacmanScale) {
+  const s = pacmanScale;
 
   // 0=transparent，1=body，2=mouth（transparent）
   let pixels = [
