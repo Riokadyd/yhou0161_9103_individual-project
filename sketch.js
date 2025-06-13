@@ -1,6 +1,7 @@
 let offsetX = -170;
 let offsetY = -400;
 let pixelFont;
+let backgroundMusic;
 let pointsPacman = [];
 let pointsPiet = [];
 let screenSize = 400;
@@ -8,15 +9,45 @@ let colors = ['red', 'blue', 'yellow', 'white'];
 let rectWidths = [40, 50, 60, 70, 80, 90];
 let rectHeights = [30, 40, 50];
 let paths = [];
+
+let redDirection = 1;
 let redGhostX = 235;
-let redGhostY = 165;
-let charaDirection = 1;
-let charaNoise = 0;
+let redGhostSpeed = 1.5;
+let redGhostNoiseX = 0;
+let redGhostNoiseY = 1000;
+
+//25 175
+let orangeDirection = 1;
+let orangeGhostY = 15;
+let orangeGhostSpeed = 1.5;
+let orangeGhostNoise = 2000;
+
+//25 185
+let purpleGhostX = 25;
+let purpleDirection = 1;
+let purpleGhostSpeed = 1;
+let purpleNoise = 3000;
+
+//25 185
+let greenGhostX = 25;
+let greenDirection = 1;
+let greenGhostSpeed = 1.5;
+let greenNoiseX = 4000;
+let greenNoiseY = 5000;
+
+let greenGhostSlider;
+let greenGhostLabel;
+
+let pacmanNoise = 6000;
+let pacmanScale = 2;
 
 let layer; 
+let noiseLayer;
+let noiseTime = 0;
 
 function preload() {
   pixelFont = loadFont("assets/pixelFont.TTF");
+  backgroundMusic = loadSound("assets/final project music.mp3")
 }
 
 function setup() {
@@ -24,6 +55,11 @@ function setup() {
   
   noStroke();
   textAlign(CENTER);
+
+  backgroundMusic.loop();
+  backgroundMusic.setVolume(0);
+
+  noiseLayer = createGraphics(screenSize, screenSize);
   
   push();
   textFont(pixelFont);
@@ -74,12 +110,23 @@ push();
      y2 += h2;
   }
 }
- 
   pop();
+  setPaths();
+
+  greenGhostLabel = createP("Shake Green Ghost!");
+  greenGhostLabel.style('font-size', '16px');
+  greenGhostLabel.style('color', 'rgb(0, 200, 0)');
+  greenGhostLabel.position(windowWidth / 2 + 310, windowHeight / 2 - 50);
+
+  greenGhostSlider = createSlider(0, 20, 2, 0.1);
+  greenGhostSlider.position(windowWidth / 2 + 320, windowHeight / 2);
+  greenGhostSlider.style('width', '100px');
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  greenGhostSlider.position(windowWidth / 2 + 320, windowHeight / 2);
+  greenGhostLabel.position(windowWidth / 2 + 310, windowHeight / 2 - 50);
 }
 
 function draw() {
@@ -92,33 +139,17 @@ function draw() {
   drawBody();
   drawScreen();
   drawBackground(); 
-  setPaths();
   drawPath();
   drawDots();
 
-  drawPixelPacman(138, 486, color(255, 255, 0)); // pacman
-  moveRedGhost(); // red
-  drawPixelGhost(223, 360, color(255, 100, 0)); //orange
-  drawPixelGhost(108, 635, color(0, 200, 0)); //green
-  drawPixelGhost(95, 405, color(90, 90, 255)); //purple
+  drawPacman(); // pacman
+  drawRedGhost(); // red
+  drawOrangeGhost(); //orange
+  drawGreenGhost(); //green
+  drawPurpleGhost(); //purple
 
+  drawNoiseLayer();
   pop();
-}
-
-function moveRedGhost(){
-  let speed = 1.5;
-
-  redGhostX += charaDirection * speed;
-
-  if (redGhostX >= 370){
-    redGhostX = 370;
-    charaDirection = -1;
-  }else if(redGhostX <= 230){
-    redGhostX = 230;
-    charaDirection = 1;
-  }
-
-  drawPixelGhost(redGhostX - 32, redGhostY + 270, color(255, 0, 0));
 }
 
 function drawBackground() {
@@ -133,7 +164,122 @@ function drawScreen() {
   drawNeonText(pointsPiet, brightness);
 }
 
+function drawNoiseLayer(){
+  noiseLayer.loadPixels();
+
+  //the size of the noise
+  let noiseSize = 0.7;
+  for(let x = 0; x < noiseLayer.width; x++){
+    for(let y = 0; y < noiseLayer.height; y++){
+      let noiseEffect = noise(x * noiseSize, y * noiseSize, noiseTime);
+      let noiseBright = map(noiseEffect, 0, 1, 0, 255);
+
+      let rgbaIndex = (x + y * noiseLayer.width) * 4;
+      noiseLayer.pixels[rgbaIndex] = noiseBright;
+      noiseLayer.pixels[rgbaIndex + 1] = noiseBright;
+      noiseLayer.pixels[rgbaIndex + 2] = noiseBright;
+      noiseLayer.pixels[rgbaIndex + 3] = 80;
+    }
+  }
+
+  noiseLayer.updatePixels();
+  noiseTime += 0.04;
+
+  image(noiseLayer, 138 + offsetX, 270);
+}
+
+function drawRedGhost() {
+  // change the location
+  redGhostX += redGhostSpeed * redDirection;
+
+  // change the direction
+  if (redGhostX >= 375) {
+    redGhostX = 375;
+    redDirection = -1;
+  }else if (redGhostX <= 235) {
+    redGhostX = 235;
+    redDirection = 1;
+  }
+
+  let noiseX = map(noise(redGhostNoiseX), 0, 1, -5.5, 5.5);
+  let noiseY = map(noise(redGhostNoiseY), 0, 1, -5.5, 5.5);
+
+  redGhostNoiseX += 0.03;
+  redGhostNoiseY += 0.03;
+
+  // draw Red Ghost
+  drawPixelGhost(redGhostX - 40 + noiseX, 175 + 260 + noiseY, color(255, 0, 0));
+}
+
+function drawOrangeGhost(){
+  let noiseSpeed = map(noise(orangeGhostNoise), 0, 1, 0.5, 2);
+  orangeGhostY += orangeGhostSpeed * orangeDirection * noiseSpeed;
+
+  if(orangeGhostY >= 170){
+    orangeGhostY = 170;
+    orangeDirection = -1;
+  }else if(orangeGhostY <= 15){
+    orangeGhostY = 15;
+    orangeDirection = 1;
+  }
+
+  orangeGhostNoise += 0.01;
+
+  drawPixelGhost(225, orangeGhostY + 270, color(255, 100, 0));
+}
+
+function drawPurpleGhost(){
+  purpleGhostX += purpleGhostSpeed * purpleDirection;
+
+  if (purpleGhostX >= 185){
+    purpleGhostX = 185;
+    purpleDirection = -1;
+  } else if(purpleGhostX <= 25){
+    purpleGhostX = 25;
+    purpleDirection = 1;
+  }
+
+  let alphaNoise = map(noise(purpleNoise), 0, 1, 25, 255);
+
+  purpleNoise += 0.03;
+
+  let purpleColour = color(90, 90, 255, alphaNoise);
+  drawPixelGhost(purpleGhostX - 40, 285, purpleColour);
+}
+
+function drawGreenGhost(){
+  greenGhostX += greenDirection * greenGhostSpeed;
+
+  if (greenGhostX >= 185){
+    greenGhostX = 185;
+    greenDirection = -1;
+  } else if(greenGhostX <= 25){
+    greenGhostX = 25;
+    greenDirection = 1;
+  }
+
+  let noiseValue = greenGhostSlider.value();
+
+  let noiseX = map(noise(greenNoiseX), 0, 1, -noiseValue, noiseValue);
+  let noiseY = map(noise(greenNoiseY), 0, 1, -noiseValue, noiseValue);
+
+  greenNoiseX += 0.02;
+  greenNoiseY += 0.02;
+
+  drawPixelGhost(greenGhostX + noiseX - 40, 635 + noiseY, color(0, 200, 0));
+}
+
+function drawPacman(){
+  pacmanScale = map(noise(pacmanNoise), 0, 1, 1, 2);
+
+  pacmanNoise += 0.02;
+
+  drawPixelPacman(143, 485, color(255, 255, 0), pacmanScale);
+}
+
 function setPaths(){
+  paths = [];
+
   let originalPaths = [
     // horizon paths
     [25, 25, 185, 25],
@@ -231,8 +377,8 @@ function drawPixelGhost(x, y, bodyColor) {
   }
 }
 
-function drawPixelPacman(x, y, bodyColor) {
-  const s = 2;
+function drawPixelPacman(x, y, bodyColor, scaleSize = 2) {
+  const s = scaleSize;
 
   // 0=transparent，1=body，2=mouth（transparent）
   let pixels = [
