@@ -14,5 +14,5 @@ The concert will play automatically after you open the window and will loop.
 
 In the arcade screen, we have set up five characters, including four colourful ghosts and a yellow Pac-Man. I created unique animation effects for each of these five characters.
 
-### Red Ghost <img src="assets/RedGhost.png" width="15" height="15" />
+### Red Ghost <img src="assets/RedGhost.png" width="20" height="20" />
 
