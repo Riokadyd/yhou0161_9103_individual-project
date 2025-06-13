@@ -8,7 +8,7 @@ Since my task is to animate with Perlin Noise, the animation is random. Therefor
 - Slide to the right to increase its range of motion.
 - Slide to the left to decrease its range of motion.
 
-The concert will play automatically after you open the window and will loop.
+In addition, you can control whether to play music by clicking the "Play Music" and "Stop Music" buttons.
 
 ## 💡 Details and Approaches
 
