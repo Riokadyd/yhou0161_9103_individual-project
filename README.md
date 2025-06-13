@@ -117,3 +117,38 @@ function drawPixelPacman(x, y, bodyColor, pacmanScale) {
 
 ### Noise Effect 🎞️
 
+Ultimately, I aim to utilize Perlin Noise to evoke the sensation of an old machine and demonstrate the effect of snowflakes. So, I covered the screen with a layer of semi-transparent snowflakes, similar to the effect of a filter.
+
+```
+function drawNoiseLayer(){
+  noiseLayer.loadPixels();
+
+  //the size of the noise
+  let noiseSize = 0.7;
+  for(let x = 0; x < noiseLayer.width; x++){
+    for(let y = 0; y < noiseLayer.height; y++){
+      let noiseEffect = noise(x * noiseSize, y * noiseSize, noiseTime);
+      let noiseBright = map(noiseEffect, 0, 1, 0, 255);
+
+      let rgbaIndex = (x + y * noiseLayer.width) * 4;
+      noiseLayer.pixels[rgbaIndex] = noiseBright;
+      noiseLayer.pixels[rgbaIndex + 1] = noiseBright;
+      noiseLayer.pixels[rgbaIndex + 2] = noiseBright;
+      noiseLayer.pixels[rgbaIndex + 3] = 75;
+    }
+  }
+
+  noiseLayer.updatePixels();
+  noiseTime += 0.09;
+
+  image(noiseLayer, 138 + offsetX, 270);
+}
+```
+
+In this effect, I used loadPixels() and updatePixels(). It can load the current value of each pixel on the canvas into the pixels array.
+[p5.js loadPixels Reference]https://p5js.org/reference/p5/loadPixels/
+
+After querying the principle, the colour of the pixel will be divided into four elements, from 0 to 3, namely r, g, b, and alpha. RGB will be determined by Perlin Noise and display the effect of flashing snowflakes. Finally, use the Alpha represented by "+3" to ensure a certain degree of transparency.
+[p5.js Pixels Reference]https://p5js.org/reference/p5/pixels/
+
+##✨Improvement
