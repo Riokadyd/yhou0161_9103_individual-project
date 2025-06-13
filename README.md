@@ -151,4 +151,16 @@ In this effect, I used loadPixels() and updatePixels(). It can load the current 
 After querying the principle, the colour of the pixel will be divided into four elements, from 0 to 3, namely r, g, b, and alpha. RGB will be determined by Perlin Noise and display the effect of flashing snowflakes. Finally, use the Alpha represented by "+3" to ensure a certain degree of transparency.
 [p5.js Pixels Reference]https://p5js.org/reference/p5/pixels/
 
-##✨Improvement
+## ✨ Improvement
+
+After completing all the code, I discovered that the snowflake effect of the old screen produces inaccurate results on screens with different resolutions. Previewing on a high-resolution screen causes the height of the NoiseLayer to shrink significantly, preventing it from covering the entire image.
+
+![Before Modifying](assets/BeforeModify.png) ![After Modifying](assets/AfterModify.png)
+
+Since I was unable to identify the problem, I handed over the NoiseLayer part of the code to ChatGPT for inspection. ChatGPT informed me that when I zoom in the browser and adjust the zoom ratio to greater than 100%, or display it on a monitor with a higher resolution, the browser internally adjusts the **devicePixelRatio**. Because the logic of p5.js ignores the **devicePixelRatio** by default, even if the NoiseLayer size is guaranteed to be 400x400 in p5.js, the **devicePixelRatio** of the browser will exceed 1. This caused me to see it stretching or narrowing.
+
+```
+ noiseLayer = createGraphics(screenSize, screenSize);
+ noiseLayer.pixelDensity(1);
+```
+ChatGPT informed me that the pixelDensity of p5.js can be manually set to 1 to ensure consistency between logical pixels and physical pixels.
