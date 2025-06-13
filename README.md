@@ -146,9 +146,11 @@ function drawNoiseLayer(){
 ```
 
 In this effect, I used loadPixels() and updatePixels(). It can load the current value of each pixel on the canvas into the pixels array.
+
 [p5.js loadPixels Reference]https://p5js.org/reference/p5/loadPixels/
 
 After querying the principle, the colour of the pixel will be divided into four elements, from 0 to 3, namely r, g, b, and alpha. RGB will be determined by Perlin Noise and display the effect of flashing snowflakes. Finally, use the Alpha represented by "+3" to ensure a certain degree of transparency.
+
 [p5.js Pixels Reference]https://p5js.org/reference/p5/pixels/
 
 ## ✨ Improvement
